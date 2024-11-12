@@ -11,6 +11,7 @@
         <x-input-error class="mt-2" :messages="$errors->get('content')"/>
     </div>
 
+
     <div class="flex items-center gap-4">
         <x-primary-button>Guardar</x-primary-button>
     </div>

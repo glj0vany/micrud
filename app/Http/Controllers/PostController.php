@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Category; // Asegúrate de importar el modelo Category
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
@@ -28,8 +29,9 @@ class PostController extends Controller
     public function create(): View
     {
         $post = new Post();
+        $categories = Category::all(); // Obtener todas las categorías disponibles
 
-        return view('post.create', compact('post'));
+        return view('post.create', compact('post', 'categories')); // Pasar las categorías a la vista
     }
 
     /**
@@ -37,7 +39,11 @@ class PostController extends Controller
      */
     public function store(PostRequest $request): RedirectResponse
     {
-        Post::create($request->validated());
+        // Validar que la categoría seleccionada exista en la base de datos
+        $validated = $request->validated();
+
+        // Crear el post, incluyendo la categoría seleccionada
+        Post::create($validated);
 
         return Redirect::route('posts.index')
             ->with('success', 'Post created successfully.');
@@ -59,8 +65,9 @@ class PostController extends Controller
     public function edit($id): View
     {
         $post = Post::find($id);
+        $categories = Category::all(); // Obtener todas las categorías disponibles
 
-        return view('post.edit', compact('post'));
+        return view('post.edit', compact('post', 'categories')); // Pasar las categorías y el post a la vista
     }
 
     /**
@@ -68,12 +75,19 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, Post $post): RedirectResponse
     {
-        $post->update($request->validated());
+        // Validar que la categoría seleccionada exista
+        $validated = $request->validated();
+
+        // Actualizar el post con los datos validados
+        $post->update($validated);
 
         return Redirect::route('posts.index')
             ->with('success', 'Post updated successfully');
     }
 
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy($id): RedirectResponse
     {
         Post::find($id)->delete();
