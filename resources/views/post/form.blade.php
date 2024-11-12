@@ -23,6 +23,9 @@
                 </option>
             @endforeach
         </select>
+        <div class="mt-2">
+            <a href="{{ route('categories.create') }}" class="text-blue-500 font-semibold">Crear nueva categoría</a>
+        </div>
         <x-input-error class="mt-2" :messages="$errors->get('id_category')"/>
     </div>
 
