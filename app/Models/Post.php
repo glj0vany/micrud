@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property $id
  * @property $title
  * @property $content
+ * @property $id_category
  * @property $created_at
  * @property $updated_at
  *
@@ -18,7 +19,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Post extends Model
 {
-    
     protected $perPage = 20;
 
     /**
@@ -26,9 +26,13 @@ class Post extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['title', 'content'];
+    protected $fillable = ['title', 'content', 'id_category']; // Incluye id_category aquí
 
-    public function category(){
+    /**
+     * Define la relación con el modelo Category
+     */
+    public function category()
+    {
         return $this->belongsTo(Category::class, 'id_category');
     }
 }

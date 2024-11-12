@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use App\Models\Category; // Asegúrate de importar el modelo Category
+use App\Models\Category;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
@@ -15,12 +14,12 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): View
+    public function index(): View
     {
         $posts = Post::paginate();
 
         return view('post.index', compact('posts'))
-            ->with('i', ($request->input('page', 1) - 1) * $posts->perPage());
+            ->with('i', (request()->input('page', 1) - 1) * $posts->perPage());
     }
 
     /**
@@ -29,9 +28,9 @@ class PostController extends Controller
     public function create(): View
     {
         $post = new Post();
-        $categories = Category::all(); // Obtener todas las categorías disponibles
+        $categories = Category::all();
 
-        return view('post.create', compact('post', 'categories')); // Pasar las categorías a la vista
+        return view('post.create', compact('post', 'categories'));
     }
 
     /**
@@ -39,10 +38,10 @@ class PostController extends Controller
      */
     public function store(PostRequest $request): RedirectResponse
     {
-        // Validar que la categoría seleccionada exista en la base de datos
+        // Validar y crear el post con la categoría seleccionada
         $validated = $request->validated();
+        $validated['id_category'] = $request->input('id_category'); // Asegurarse de incluir id_category
 
-        // Crear el post, incluyendo la categoría seleccionada
         Post::create($validated);
 
         return Redirect::route('posts.index')
@@ -52,22 +51,19 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id): View
+    public function show(Post $post): View
     {
-        $post = Post::find($id);
-
         return view('post.show', compact('post'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id): View
+    public function edit(Post $post): View
     {
-        $post = Post::find($id);
-        $categories = Category::all(); // Obtener todas las categorías disponibles
+        $categories = Category::all();
 
-        return view('post.edit', compact('post', 'categories')); // Pasar las categorías y el post a la vista
+        return view('post.edit', compact('post', 'categories'));
     }
 
     /**
@@ -75,10 +71,10 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, Post $post): RedirectResponse
     {
-        // Validar que la categoría seleccionada exista
+        // Validar y actualizar el post con la categoría seleccionada
         $validated = $request->validated();
+        $validated['id_category'] = $request->input('id_category'); // Asegurarse de incluir id_category
 
-        // Actualizar el post con los datos validados
         $post->update($validated);
 
         return Redirect::route('posts.index')
@@ -88,9 +84,9 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id): RedirectResponse
+    public function destroy(Post $post): RedirectResponse
     {
-        Post::find($id)->delete();
+        $post->delete();
 
         return Redirect::route('posts.index')
             ->with('success', 'Post deleted successfully');
