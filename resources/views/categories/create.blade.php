@@ -33,6 +33,19 @@
                                 />
                                 <x-input-error class="mt-2" :messages="$errors->get('name')" />
                             </div>
+                            <!-- Campo descripción -->
+                            <div>
+                                <x-input-label for="description" :value="__('Descripción de la Categoría')" />
+                                <x-text-input 
+                                    id="description" 
+                                    name="description" 
+                                    type="text" 
+                                    class="mt-1 block w-full" 
+                                    placeholder="Descripción de la Categoría" 
+                                    required 
+                                />
+                                <x-input-error class="mt-2" :messages="$errors->get('description')" />
+                            </div>
                             <!-- Botón para crear la categoría -->
                             <div class="flex items-center gap-4">
                                 <x-primary-button>Crear Categoría</x-primary-button>
@@ -42,7 +55,7 @@
 
                     <!-- Enlace para regresar a la página anterior -->
                     <div class="mt-4">
-                    <a href="{{ route('dashboard') }}" class="text-blue-600 hover:text-blue-800">Regresar</a>
+                    <a href="{{ route('categories.index') }}" class="text-blue-600 hover:text-blue-800">Regresar</a>
                     </div>
                 </div>
             </div>

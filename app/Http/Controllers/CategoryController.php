@@ -4,35 +4,98 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class CategoryController extends Controller
 {
-    // Método para mostrar el formulario de creación de categoría (si tienes uno)
-    public function create()
-{
-    // Guarda la URL actual en la sesión, solo si no está ya guardada
-    if (!session()->has('previous_url')) {
-        session(['previous_url' => url()->previous()]);
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(): View
+    {
+        $categories = Category::paginate();
+
+        return view('categories.index', compact('categories'))
+            ->with('i', (request()->input('page', 1) - 1) * $categories->perPage());
     }
 
-    return view('categories.create'); // Redirige al formulario de creación de categorías
-}
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create(): View
+    {
+        // Guarda la URL actual en la sesión solo si no está ya guardada
+        if (!session()->has('previous_url')) {
+            session(['previous_url' => url()->previous()]);
+        }
 
+        return view('categories.create');
+    }
 
-    // Método para almacenar la nueva categoría
-    public function store(Request $request)
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request): RedirectResponse
     {
         // Validación de la categoría
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:categories,name',
+            'description' => 'nullable|string|max:255', // Cambiado a nullable si es opcional
         ]);
 
-        // Crear la categoría
-        $category = Category::create([
-            'name' => $request->input('name'),
+        // Crear la categoría con el campo description
+        Category::create([
+            'name' => $request->name,
+            'description' => $request->description ?? '', // Asignar vacío si no se proporciona descripción
         ]);
 
-        // Redirigir de nuevo a la página anterior con un mensaje de éxito
-        return back()->with('success', 'Categoría creada exitosamente');
+        return redirect()->route('categories.index')
+            ->with('success', 'Categoría creada exitosamente');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Category $category): View
+    {
+        return view('categories.show', compact('category'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Category $category): View
+    {
+        return view('categories.edit', compact('category'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Category $category): RedirectResponse
+    {
+        // Validación de la categoría
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
+            'description' => 'nullable|string|max:255', // Cambiado a nullable si es opcional
+        ]);
+
+        // Actualizar la categoría
+        $category->update($validated);
+
+        return redirect()->route('categories.index')
+            ->with('success', 'Categoría actualizada exitosamente');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Category $category): RedirectResponse
+    {
+        $category->delete();
+
+        return redirect()->route('categories.index')
+            ->with('success', 'Categoría eliminada exitosamente');
     }
 }

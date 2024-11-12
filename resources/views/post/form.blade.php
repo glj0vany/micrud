@@ -17,14 +17,20 @@
     <div>
         <x-input-label for="id_category" :value="__('Categoría')"/>
         <select id="id_category" name="id_category" class="mt-1 block w-full">
-            @foreach($categories as $category)
-                <option value="{{ $category->id }}" {{ old('id_category', $post->id_category) == $category->id ? 'selected' : '' }}>
-                    {{ $category->name }}
-                </option>
-            @endforeach
-        </select>
+    <!-- Mostrar la opción predeterminada solo si no hay categoría seleccionada (cuando se crea un nuevo post) -->
+    <option value="" disabled {{ old('id_category', $post->id_category) == null ? 'selected' : '' }}>
+        Escoge la categoría
+    </option>
+
+    @foreach($categories as $category)
+        <option value="{{ $category->id }}" {{ old('id_category', $post->id_category) == $category->id ? 'selected' : '' }}>
+            {{ $category->name }}
+        </option>
+    @endforeach
+</select>
+
         <div class="mt-2">
-            <a href="{{ route('categories.create') }}" class="text-blue-500 font-semibold">Crear nueva categoría</a>
+            <a href="{{ route('categories.index') }}" class="text-blue-500 font-semibold">Crear nueva categoría</a>
         </div>
         <x-input-error class="mt-2" :messages="$errors->get('id_category')"/>
     </div>

@@ -23,6 +23,7 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 Route::resource('posts', PostController::class);
+Route::resource('categories', CategoryController::class);
 
 Route::get('/dashboard', [RelacionController::class, 'index'])->name('dashboard');
 
