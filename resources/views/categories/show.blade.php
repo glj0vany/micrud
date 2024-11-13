@@ -34,6 +34,23 @@
                                         </div>
                                     </dl>
                                 </div>
+
+                                <!-- Sección para mostrar los posts de la categoría -->
+                                <div class="mt-6">
+                                    <h3 class="text-lg font-semibold text-gray-900">Posts en esta categoría</h3>
+                                    @if($category->posts->isEmpty())
+                                        <p class="mt-2 text-sm text-gray-700">No hay posts en esta categoría.</p>
+                                    @else
+                                        <ul class="mt-4 space-y-4">
+                                            @foreach ($category->posts as $post)
+                                                <li class="p-4 bg-gray-100 rounded-md shadow">
+                                                    <h4 class="text-sm font-semibold text-gray-900">{{ $post->title }}</h4>
+                                                    <p class="mt-2 text-sm text-gray-700">{{ $post->content }}</p>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </div>
