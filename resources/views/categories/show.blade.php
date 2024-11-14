@@ -37,7 +37,7 @@
 
                                 <!-- Sección para mostrar los posts de la categoría -->
                                 <div class="mt-6">
-                                    <h3 class="text-lg font-semibold text-gray-900">Posts en esta categoría</h3>
+                                    <h3 class="text-lg font-semibold text-gray-900">Items en esta categoría</h3>
                                     @if($category->posts->isEmpty())
                                         <p class="mt-2 text-sm text-gray-700">No hay posts en esta categoría.</p>
                                     @else
