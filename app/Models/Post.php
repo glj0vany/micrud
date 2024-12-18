@@ -23,7 +23,7 @@ class Post extends Model
     {
         return LogOptions::defaults()
             ->logOnly(['title', 'content', 'id_category'])  // Especifica los atributos a registrar
-            ->useLogName('post')                             // Especifica el nombre del log
-            ->setDescriptionForEvent(fn(string $eventName) => "El post ha sido {$eventName}");
+            ->useLogName('items')                             // Especifica el nombre del log
+            ->setDescriptionForEvent(fn(string $eventName) => "El item ha sido {$eventName}");
     }
 }
