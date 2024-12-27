@@ -2,6 +2,7 @@
 
 return [
 
+    App\Providers\RouteServiceProvider::class,
     /*
     |--------------------------------------------------------------------------
     | Application Name
