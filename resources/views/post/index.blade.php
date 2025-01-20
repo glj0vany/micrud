@@ -20,9 +20,8 @@
 
                     <div class="mt-4 sm:flex sm:items-center">
                         
-                    <!-- Filtros -->
                     <form id="filter-form" method="GET" action="{{ route('posts.index') }}" class="flex flex-wrap gap-6 items-start">
-                        <!-- Título -->
+
                         <div class="flex flex-col items-start w-48">
                             <label for="title" class="block text-xs font-semibold text-gray-500 mb-2">Título</label>
                             <input 
@@ -35,7 +34,6 @@
                             >
                         </div>
 
-                        <!-- Categoría -->
                         <div class="flex flex-col items-start w-48">
                             <label for="id_category" class="block text-xs font-semibold text-gray-500 mb-2">Categoría</label>
                             <select 
@@ -50,7 +48,6 @@
                             </select>
                         </div>
 
-                        <!-- Ordenar por -->
                         <div class="flex flex-col items-start w-48">
                             <label for="sort_field" class="block text-xs font-semibold text-gray-500 mb-2">Ordenar por</label>
                             <select 
@@ -63,7 +60,6 @@
                             </select>
                         </div>
 
-                        <!-- Orden -->
                         <div class="flex flex-col items-start w-48">
                             <label for="sort_order" class="block text-xs font-semibold text-gray-500 mb-2">Orden</label>
                             <select 
@@ -76,7 +72,6 @@
                             </select>
                         </div>
 
-                        <!-- Mostrar -->
                         <div class="flex flex-col items-start w-48">
                             <label for="per_page" class="block text-xs font-semibold text-gray-500 mb-2">Mostrar</label>
                             <select 
@@ -138,7 +133,6 @@
         </div>
     </div>
 
-    <!-- Script para filtros automáticos -->
     <script>
         document.querySelectorAll('#filter-form input, #filter-form select').forEach(element => {
             element.addEventListener('change', () => {

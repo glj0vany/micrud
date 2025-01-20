@@ -27,21 +27,21 @@
                                     @csrf
 
                                     <div class="space-y-6">
-                                        <!-- Campo Nombre -->
+                                        
                                         <div>
                                             <x-input-label for="name" :value="__('Nombre')" />
                                             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $category->name)" autocomplete="name" placeholder="Nombre de la categoría" />
                                             <x-input-error class="mt-2" :messages="$errors->get('name')" />
                                         </div>
 
-                                        <!-- Campo Descripción -->
+                                        
                                         <div>
                                             <x-input-label for="description" :value="__('Descripción')" />
                                             <x-text-input id="description" name="description" type="text" class="mt-1 block w-full" :value="old('description', $category->description)" autocomplete="description" placeholder="Descripción de la categoría" />
                                             <x-input-error class="mt-2" :messages="$errors->get('description')" />
                                         </div>
 
-                                        <!-- Botón Guardar -->
+                                        
                                         <div class="flex items-center gap-4">
                                             <x-primary-button>Guardar</x-primary-button>
                                         </div>

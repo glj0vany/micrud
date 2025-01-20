@@ -18,12 +18,11 @@ class Post extends Model
         return $this->belongsTo(Category::class, 'id_category');
     }
 
-    // Implementa el método getActivitylogOptions
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['title', 'content', 'id_category'])  // Especifica los atributos a registrar
-            ->useLogName('items')                             // Especifica el nombre del log
+            ->logOnly(['title', 'content', 'id_category'])  
+            ->useLogName('items')                             
             ->setDescriptionForEvent(fn(string $eventName) => "El item ha sido {$eventName}");
     }
 }

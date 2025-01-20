@@ -35,7 +35,6 @@
                                     </dl>
                                 </div>
 
-                                <!-- Sección para mostrar los posts de la categoría -->
                                 <div class="mt-6">
                                     <h3 class="text-lg font-semibold text-gray-900">Items en esta categoría</h3>
                                     @if($category->posts->isEmpty())

@@ -17,12 +17,11 @@ class Category extends Model
         return $this->hasMany(Post::class, 'id_category');
     }
 
-    // Implementa el método getActivitylogOptions
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['name', 'description'])  // Especifica los atributos a registrar
-            ->useLogName('category')            // Especifica el nombre del log
+            ->logOnly(['name', 'description'])  
+            ->useLogName('category')            
             ->setDescriptionForEvent(fn(string $eventName) => "La categoría ha sido {$eventName}");
     }
 }

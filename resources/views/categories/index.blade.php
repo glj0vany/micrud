@@ -17,7 +17,6 @@
                         </div>
                     </div>
 
-                    <!-- Formulario de filtrado -->
                     <form method="GET" action="{{ route('categories.index') }}" class="mt-6">
                         <div class="flex space-x-4">
                             <div>
@@ -85,7 +84,6 @@
                                     </tbody>
                                 </table>
 
-                                <!-- Paginación -->
                                 <div class="mt-4">
                                     {{ $categories->appends(request()->except('page'))->links() }}
                                 </div>

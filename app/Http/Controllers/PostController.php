@@ -12,76 +12,51 @@ use Illuminate\View\View;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource with filters and sorting.
-     */
+
     public function index(Request $request): View
     {
-        // Obtener todas las categorías para el filtro
         $categories = Category::all();
-
-        // Iniciar la consulta en el modelo Post
         $query = Post::query();
 
-        // Filtro por título
         if ($request->filled('title')) {
             $query->where('title', 'like', '%' . $request->title . '%');
         }
 
-        // Filtro por categoría
         if ($request->filled('id_category')) {
-            $query->where('id_category', $request->id_category); // Corregir el campo de categoría
+            $query->where('id_category', $request->id_category);
         }
 
-        // Ordenamiento
-        $sortField = $request->get('sort_field', 'created_at'); // Campo por defecto: created_at
-        $sortOrder = $request->get('sort_order', 'desc');       // Orden por defecto: desc
+        $sortField = $request->get('sort_field', 'created_at'); 
+        $sortOrder = $request->get('sort_order', 'desc');       
         $query->orderBy($sortField, $sortOrder);
-
-        // Paginación
-        $perPage = $request->get('per_page', 10); // Por defecto, 10 elementos por página
+        $perPage = $request->get('per_page', 10);
         $posts = $query->paginate($perPage)->withQueryString();
 
         return view('post.index', compact('posts', 'categories'))
             ->with('i', (request()->input('page', 1) - 1) * $posts->perPage());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create(): View
     {
         $post = new Post();
         $categories = Category::all();
-
         return view('post.create', compact('post', 'categories'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(PostRequest $request): RedirectResponse
     {
         $validated = $request->validated();
-        $validated['id_category'] = $request->input('id_category'); // Corregir el nombre del campo
-
+        $validated['id_category'] = $request->input('id_category'); 
         Post::create($validated);
-
         return Redirect::route('posts.index')
             ->with('success', 'Post created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Post $post): View
     {
         return view('post.show', compact('post'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Post $post): View
     {
         $categories = Category::all();
@@ -89,13 +64,10 @@ class PostController extends Controller
         return view('post.edit', compact('post', 'categories'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(PostRequest $request, Post $post): RedirectResponse
     {
         $validated = $request->validated();
-        $validated['id_category'] = $request->input('id_category'); // Corregir el nombre del campo
+        $validated['id_category'] = $request->input('id_category'); 
 
         $post->update($validated);
 
@@ -103,9 +75,6 @@ class PostController extends Controller
             ->with('success', 'Post updated successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Post $post): RedirectResponse
     {
         $post->delete();
