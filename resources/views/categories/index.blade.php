@@ -17,6 +17,42 @@
                         </div>
                     </div>
 
+                    <!-- Formulario de filtrado -->
+                    <form method="GET" action="{{ route('categories.index') }}" class="mt-6">
+                        <div class="flex space-x-4">
+                            <div>
+                                <input 
+                                    type="text" 
+                                    name="search" 
+                                    value="{{ request('search') }}" 
+                                    placeholder="Buscar por nombre..." 
+                                    class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                />
+                            </div>
+                            <div>
+                                <select 
+                                    name="sort" 
+                                    class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                >
+                                    <option value="name" {{ request('sort') === 'name' ? 'selected' : '' }}>Nombre</option>
+                                    <option value="id" {{ request('sort') === 'id' ? 'selected' : '' }}>ID</option>
+                                </select>
+                            </div>
+                            <div>
+                                <select 
+                                    name="direction" 
+                                    class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                >
+                                    <option value="asc" {{ request('direction') === 'asc' ? 'selected' : '' }}>Ascendente</option>
+                                    <option value="desc" {{ request('direction') === 'desc' ? 'selected' : '' }}>Descendente</option>
+                                </select>
+                            </div>
+                            <div>
+                                <button type="submit" class="rounded-md bg-blue-500 px-4 py-2 text-white">Aplicar</button>
+                            </div>
+                        </div>
+                    </form>
+
                     <div class="flow-root">
                         <div class="mt-8 overflow-x-auto">
                             <div class="inline-block min-w-full py-2 align-middle">
@@ -26,6 +62,7 @@
                                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nombre</th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Descripción</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-200 bg-white">
@@ -48,6 +85,10 @@
                                     </tbody>
                                 </table>
 
+                                <!-- Paginación -->
+                                <div class="mt-4">
+                                    {{ $categories->appends(request()->except('page'))->links() }}
+                                </div>
                             </div>
                         </div>
                     </div>

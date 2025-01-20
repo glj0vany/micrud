@@ -9,20 +9,32 @@ use Illuminate\View\View;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(): View
+    
+    public function index(Request $request): View
     {
-        $categories = Category::paginate();
+        $query = Category::query();
+
+        // Filtro por nombre
+        if ($request->has('search') && $request->input('search') !== '') {
+            $query->where('name', 'like', '%' . $request->input('search') . '%');
+        }
+
+        // Ordenamiento
+        $sort = $request->input('sort', 'name'); // Por defecto ordenar por nombre
+        $direction = $request->input('direction', 'asc'); // Por defecto ascendente
+
+        // Asegurar que el valor de la dirección sea válido (asc o desc)
+        if (!in_array($direction, ['asc', 'desc'])) {
+            $direction = 'asc';
+        }
+
+        $categories = $query->orderBy($sort, $direction)->paginate(10);
 
         return view('categories.index', compact('categories'))
             ->with('i', (request()->input('page', 1) - 1) * $categories->perPage());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create(): View
     {
         // Guarda la URL actual en la sesión solo si no está ya guardada
